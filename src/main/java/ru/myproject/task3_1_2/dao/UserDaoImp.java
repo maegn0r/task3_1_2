@@ -1,7 +1,6 @@
 package ru.myproject.task3_1_2.dao;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.myproject.task3_1_2.model.User;
 
 import javax.persistence.EntityManager;
@@ -11,20 +10,17 @@ import java.util.List;
 
 
 @Repository
-@Transactional
 public class UserDaoImp implements UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    @Transactional
     public void add(User user) {
         entityManager.persist(user);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<User> listUsers() {
         return entityManager.createQuery("SELECT user from User user", User.class).getResultList();
     }
@@ -40,13 +36,11 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    @Transactional
     public void merge(User user) {
         entityManager.merge(user);
     }
 
     @Override
-    @Transactional
     public void remove(User user) {
         entityManager.remove(entityManager.contains(user) ? user : entityManager.merge(user));
     }
